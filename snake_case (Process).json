@@ -12,70 +12,109 @@
       }
     },
     {
-      "description": "TemporalInterval",
-      "name": "TemporalInterval",
+      "description": "TimeInterval",
+      "name": "TimeInterval",
       "schema": {
-        "description": "Left-closed temporal interval, represented as two-element array with the following elements:\n\n1. The first element is the start of the temporal interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the temporal interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339.html). Although [RFC 3339 prohibits the hour to be '24'](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day. `null` can be used to specify open intervals.",
+        "description": "Left-closed temporal intervals, which are allowed to overlap. Formatted as an array of two-element arrays, each being an array with subtype `temporal-interval`.",
         "examples": [
           [
-            "2015-01-01T00:00:00Z",
-            "2016-01-01T00:00:00Z"
+            [
+              "2015-01-01",
+              "2016-01-01"
+            ],
+            [
+              "2016-01-01",
+              "2017-01-01"
+            ],
+            [
+              "2017-01-01",
+              "2018-01-01"
+            ]
           ],
           [
-            "2015-01-01",
-            "2016-01-01"
+            [
+              "00:00:00Z",
+              "12:00:00Z"
+            ],
+            [
+              "12:00:00Z",
+              "24:00:00Z"
+            ]
           ],
           [
-            "00:00:00Z",
-            "12:00:00Z"
-          ],
-          [
-            "2015-01-01",
-            null
+            [
+              "2020-01-01T00:00:00Z",
+              null
+            ]
           ]
         ],
         "items": {
-          "anyOf": [
-            {
-              "description": "Date and time representation, as defined for `date-time` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6).",
-              "format": "date-time",
-              "subtype": "date-time",
-              "title": "Date with Time",
-              "type": "string"
-            },
-            {
-              "description": "Date only representation, as defined for `full-date` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6). The time zone is UTC.",
-              "format": "date",
-              "subtype": "date",
-              "title": "Date only",
-              "type": "string"
-            },
-            {
-              "description": "Time only representation, as defined for `full-time` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6). Although [RFC 3339 prohibits the hour to be '24'](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7), this definition allows the value '24' for the hour as end time in an interval in order to make it possible that left-closed time intervals can fully cover the day.",
-              "format": "time",
-              "subtype": "time",
-              "title": "Time only",
-              "type": "string"
-            },
-            {
-              "description": "Year representation, as defined for `date-fullyear` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6).",
-              "maxLength": 4,
-              "minLength": 4,
-              "pattern": "^\\d{4}$",
-              "subtype": "year",
-              "title": "Year only",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
+          "description": "Left-closed temporal interval, represented as two-element array with the following elements:\n\n1. The first element is the start of the temporal interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the temporal interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339.html). Although [RFC 3339 prohibits the hour to be '24'](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day. `null` can be used to specify open intervals.",
+          "examples": [
+            [
+              "2015-01-01T00:00:00Z",
+              "2016-01-01T00:00:00Z"
+            ],
+            [
+              "2015-01-01",
+              "2016-01-01"
+            ],
+            [
+              "00:00:00Z",
+              "12:00:00Z"
+            ],
+            [
+              "2015-01-01",
+              null
+            ]
           ],
-          "description": "Processes and implementations may choose to only implement a subset of the subtypes specified here. Clients must check what back-ends / processes actually support."
+          "items": {
+            "anyOf": [
+              {
+                "description": "Date and time representation, as defined for `date-time` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6).",
+                "format": "date-time",
+                "subtype": "date-time",
+                "title": "Date with Time",
+                "type": "string"
+              },
+              {
+                "description": "Date only representation, as defined for `full-date` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6). The time zone is UTC.",
+                "format": "date",
+                "subtype": "date",
+                "title": "Date only",
+                "type": "string"
+              },
+              {
+                "description": "Time only representation, as defined for `full-time` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6). Although [RFC 3339 prohibits the hour to be '24'](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7), this definition allows the value '24' for the hour as end time in an interval in order to make it possible that left-closed time intervals can fully cover the day.",
+                "format": "time",
+                "subtype": "time",
+                "title": "Time only",
+                "type": "string"
+              },
+              {
+                "description": "Year representation, as defined for `date-fullyear` by [RFC 3339 in section 5.6](https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6).",
+                "maxLength": 4,
+                "minLength": 4,
+                "pattern": "^\\d{4}$",
+                "subtype": "year",
+                "title": "Year only",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Processes and implementations may choose to only implement a subset of the subtypes specified here. Clients must check what back-ends / processes actually support."
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "subtype": "temporal-interval",
+          "title": "Single temporal interval",
+          "type": "array"
         },
-        "maxItems": 2,
-        "minItems": 2,
-        "subtype": "temporal-interval",
-        "title": "Single temporal interval",
+        "minItems": 1,
+        "subtype": "temporal-intervals",
+        "title": "Multiple temporal intervals",
         "type": "array"
       }
     }
@@ -87,7 +126,7 @@
           "from_parameter": "ImageCollection"
         },
         "intervals": {
-          "from_parameter": "TemporalInterval"
+          "from_node": "array1"
         },
         "reducer": {
           "process_graph": {
@@ -103,12 +142,16 @@
           }
         }
       },
-      "position": [
-        0,
-        0
-      ],
       "process_id": "aggregate_temporal",
       "result": true
+    },
+    "array1": {
+      "arguments": {
+        "data": {
+          "from_parameter": "TimeInterval"
+        }
+      },
+      "process_id": "array_create"
     }
   }
 }
